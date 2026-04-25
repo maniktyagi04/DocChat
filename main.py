@@ -58,3 +58,47 @@ def get_qa_chain(store):
     return_source_documents = True
     return RetrievalQA.from_chain_type(llm=llm, chain_type=chain_type, return_source_documents=return_source_documents, retriever=retriever)
 
+# --------------- routes ---------------
+
+@app.get("/", response_class=HTMLResponse)
+async def home():
+    return HTMLResponse(Path("static/index.html").read_text())
+
+
+class QueryRequest(BaseModel):
+    question: str
+
+
+@app.post("/upload")
+async def upload_document(file: UploadFile = File(...)):
+    global vector_store
+    if not file.filename:
+        raise HTTPException(status_code=400, detail="No file uploaded.")
+    ext = Path(file.filename).suffix.lower()
+    if ext not in [".pdf", ".txt"]:
+        raise HTTPException(status_code=400, detail="Unsupported file type. Only .pdf and .txt allowed.")
+    safe_name = Path(file.filename).name
+    file_path = UPLOAD_DIR / safe_name
+    with open(file_path, "wb") as f:
+        shutil.copyfileobj(file.file, f)
+    try:
+        documents = load_document(str(file_path))
+        vector_store = build_vector_store(documents)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error processing document: {str(e)}")
+    return {"message": f"'{safe_name}' uploaded and indexed successfully.", "pages": len(documents)}
+
+
+@app.post("/query")
+async def query_document(req: QueryRequest):
+    if vector_store is None:
+        raise HTTPException(status_code=400, detail="No document uploaded yet. Please upload a document first.")
+    chain = get_qa_chain(vector_store)
+    result = chain.invoke({"query": req.question})
+    sources = []
+    for doc in result.get("source_documents", []):
+        sources.append({
+            "content": doc.page_content[:300],
+            "metadata": doc.metadata
+        })
+    return {"answer": result["result"], "sources": sources}
