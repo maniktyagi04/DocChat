@@ -38,4 +38,44 @@ function Dots(){
       {[0,1,2].map(i=>(
         <span key={i} className={`w-2 h-2 rounded-full bg-p-400 inline-block animate-dot d${i+1}`} style={{animationDelay:`${i*.2}s`}}/>
       ))}
+    </div>
+  );
+}
+
+/* ── Chat bubble ─────────────────────────────── */
+function Bubble({role,content,sources}){
+  const u=role==='user';
+  return(
+    <div className={`flex w-full mb-3 animate-fade-up ${u?'justify-end':'justify-start'}`}>
+      {!u&&(
+        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-p-700 to-p-400 flex items-center justify-center mr-2.5 mt-0.5 flex-shrink-0 shadow-md">
+          <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+        </div>
+      )}
+      <div className="max-w-[80%]">
+        <div className={`rounded-2xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap shadow-sm ${u?'bg-p-700 text-white rounded-tr-sm':'bg-white text-gray-800 border border-gray-100 rounded-tl-sm'}`}>
+          {content}
+        </div>
+        {!u&&sources&&sources.length>0&&(
+          <div className="mt-1.5 space-y-1">
+            <p className="text-xs text-gray-400 font-medium px-1">Sources</p>
+            {sources.map((s,i)=>(
+              <div key={i} className="bg-p-50 border border-p-100 rounded-lg px-3 py-1.5 text-xs text-p-700">
+                <span className="font-semibold text-p-500">[{i+1}]</span> {s.content}
+                {s.metadata?.page!=null&&<span className="text-p-400 ml-1">· p.{s.metadata.page+1}</span>}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      {u&&(
+        <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center ml-2.5 mt-0.5 flex-shrink-0">
+          <svg className="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── Chat panel ──────────────────────────────── */
 </body></html>
