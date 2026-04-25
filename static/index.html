@@ -298,4 +298,38 @@ function App(){
         <p className="text-gray-500 text-lg max-w-xl mx-auto leading-relaxed">
           Upload a document and instantly ask questions — get precise<br className="hidden sm:block"/>
           answers with source citations, powered by AI.
-</body></html>
+        </p>
+      </section>
+
+      {/* Arrow + Upload */}
+      <section className="px-6 pb-6 flex flex-col items-center animate-fade-up" style={{animationDelay:'0.1s'}}>
+        <Arrow/>
+        <UploadZone onSuccess={handleSuccess}/>
+      </section>
+
+      {/* Chat section — revealed after upload */}
+      {uploaded&&(
+        <section id="chat-section" className="px-6 pb-16">
+          <div className="w-full max-w-2xl mx-auto">
+            <div className="flex items-center gap-3 mb-1">
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-p-200 to-transparent"/>
+              <span className="text-xs text-p-400 font-semibold uppercase tracking-widest">Your AI Assistant</span>
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-p-200 to-transparent"/>
+            </div>
+          </div>
+          <ChatPanel fileName={uploaded}/>
+        </section>
+      )}
+
+      {/* Footer */}
+      <footer className="mt-auto pb-8 text-center text-xs text-gray-400">
+        Built with FastAPI · LangChain · FAISS · Groq LLaMA 3
+      </footer>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
