@@ -78,4 +78,54 @@ function Bubble({role,content,sources}){
 }
 
 /* ── Chat panel ──────────────────────────────── */
+function ChatPanel({fileName}){
+  const [msgs,setMsgs]=useState([]);
+  const [q,setQ]=useState('');
+  const [busy,setBusy]=useState(false);
+  const bottom=useRef(null);
+  const inp=useRef(null);
+
+  useEffect(()=>{
+    setMsgs([{role:'assistant',content:`I've finished indexing "${fileName}". Ask me anything about it!`,sources:[]}]);
+    inp.current?.focus();
+  },[fileName]);
+
+  useEffect(()=>{ bottom.current?.scrollIntoView({behavior:'smooth'}); },[msgs,busy]);
+
+  const send=async()=>{
+    const text=q.trim();
+    if(!text||busy)return;
+    setQ('');
+    setMsgs(p=>[...p,{role:'user',content:text}]);
+    setBusy(true);
+    try{
+      const r=await fetch('/query',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:text})});
+      const d=await r.json();
+      setMsgs(p=>[...p,{role:'assistant',content:r.ok?d.answer:'⚠️ '+(d.detail||'Error'),sources:d.sources||[]}]);
+    }catch(e){
+      setMsgs(p=>[...p,{role:'assistant',content:'Network error: '+e.message,sources:[]}]);
+    }
+    setBusy(false);
+  };
+
+  return(
+    <div className="w-full max-w-2xl mx-auto mt-6 animate-slide-down">
+      <div className="bg-white rounded-2xl shadow-xl shadow-p-100/40 border border-p-100/60 overflow-hidden">
+        {/* Panel header */}
+        <div className="px-5 py-3.5 border-b border-gray-100 flex items-center gap-3 bg-gradient-to-r from-p-50 to-white">
+          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm animate-pulse"/>
+          <span className="text-sm font-semibold text-gray-700 truncate flex-1">{fileName}</span>
+          <span className="text-xs text-p-500 font-semibold bg-p-50 border border-p-100 px-2.5 py-0.5 rounded-full">RAG · Active</span>
+        </div>
+        {/* Messages */}
+        <div className="h-96 overflow-y-auto chat-scroll px-5 py-5 bg-gray-50/30">
+          {msgs.map((m,i)=><Bubble key={i} role={m.role} content={m.content} sources={m.sources}/>)}
+          {busy&&(
+            <div className="flex items-start mb-3">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-p-700 to-p-400 flex items-center justify-center mr-2.5 flex-shrink-0 shadow-md">
+                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+              </div>
+              <div className="bg-white border border-gray-100 rounded-2xl rounded-tl-sm shadow-sm px-3 py-2"><Dots/></div>
+            </div>
+          )}
 </body></html>
