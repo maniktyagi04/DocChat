@@ -238,4 +238,64 @@ function UploadZone({onSuccess}){
 function Arrow(){
   return(
     <div className="flex flex-col items-start ml-[8%] sm:ml-[12%] mb-0 select-none pointer-events-none">
+      {/* Clean professional curved arrow SVG */}
+      <svg width="110" height="72" viewBox="0 0 110 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+        {/* Curved path from top-left sweeping down-right */}
+        <path
+          d="M 18 10 C 30 6, 60 8, 82 30 C 92 42, 96 56, 98 62"
+          stroke="#7c3aed"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          fill="none"
+        />
+        {/* Clean arrowhead */}
+        <path
+          d="M 98 62 L 85 54"
+          stroke="#7c3aed" strokeWidth="2.2" strokeLinecap="round"
+        />
+        <path
+          d="M 98 62 L 90 74"
+          stroke="#7c3aed" strokeWidth="2.2" strokeLinecap="round"
+        />
+      </svg>
+      <p className="text-p-500 text-xs font-semibold tracking-wider uppercase ml-5 -mt-1">start here</p>
+    </div>
+  );
+}
+
+/* ── Main App ────────────────────────────────── */
+function App(){
+  const [uploaded,setUploaded]=useState(null);
+
+  const handleSuccess=name=>{
+    setUploaded(name);
+    setTimeout(()=>document.getElementById('chat-section')?.scrollIntoView({behavior:'smooth',block:'start'}),350);
+  };
+
+  return(
+    <div className="min-h-screen flex flex-col">
+
+      {/* Nav */}
+      <nav className="w-full px-6 py-4 flex items-center justify-between max-w-5xl mx-auto">
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 rounded-lg bg-p-700 flex items-center justify-center shadow">
+            <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          </div>
+          <span className="font-bold text-gray-900 text-base tracking-tight">DocChat</span>
+        </div>
+        <span className="text-xs text-p-600 font-semibold bg-p-50 border border-p-200 px-3 py-1 rounded-full">Powered by RAG · Groq</span>
+      </nav>
+
+      {/* Hero */}
+      <section className="text-center px-6 pt-10 pb-6 animate-fade-up">
+        <div className="inline-flex items-center gap-2 bg-p-50 border border-p-200 text-p-600 text-xs font-semibold px-3 py-1.5 rounded-full mb-6 shadow-sm">
+          <span className="w-1.5 h-1.5 rounded-full bg-p-500 animate-pulse"/>
+          AI-powered document intelligence
+        </div>
+        <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight text-gray-900 leading-tight mb-5">
+          Chat with any <span className="gtext">PDF</span>
+        </h1>
+        <p className="text-gray-500 text-lg max-w-xl mx-auto leading-relaxed">
+          Upload a document and instantly ask questions — get precise<br className="hidden sm:block"/>
+          answers with source citations, powered by AI.
 </body></html>
