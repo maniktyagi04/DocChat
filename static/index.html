@@ -128,4 +128,54 @@ function ChatPanel({fileName}){
               <div className="bg-white border border-gray-100 rounded-2xl rounded-tl-sm shadow-sm px-3 py-2"><Dots/></div>
             </div>
           )}
+          <div ref={bottom}/>
+        </div>
+        {/* Input */}
+        <div className="px-4 py-3 border-t border-gray-100 bg-white">
+          <div className="flex items-end gap-2 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 focus-within:border-p-500 focus-within:ring-2 focus-within:ring-p-100 transition-all">
+            <textarea
+              ref={inp} id="question" rows={1} value={q}
+              onChange={e=>setQ(e.target.value)}
+              onKeyDown={e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}}}
+              placeholder="Ask anything about this document…"
+              className="flex-1 bg-transparent outline-none text-sm text-gray-700 placeholder-gray-400 leading-relaxed max-h-28 py-0.5"
+            />
+            <button id="ask-btn" onClick={send} disabled={!q.trim()||busy}
+              className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-all ${!q.trim()||busy?'bg-gray-200 text-gray-400 cursor-not-allowed':'bg-p-700 text-white hover:bg-p-800 hover:shadow-lg active:scale-95'}`}>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+            </button>
+          </div>
+          <p className="text-xs text-gray-400 mt-1.5 text-center">Enter to send · Shift+Enter for new line</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Upload zone ─────────────────────────────── */
+function UploadZone({onSuccess}){
+  const [drag,setDrag]=useState(false);
+  const [file,setFile]=useState(null);
+  const [busy,setBusy]=useState(false);
+  const [st,setSt]=useState(null);
+  const inp=useRef(null);
+
+  const pick=f=>{ if(f){setFile(f);setSt(null);} };
+  const onDrop=useCallback(e=>{e.preventDefault();setDrag(false);pick(e.dataTransfer.files[0]);},[]);
+  const onOver=useCallback(e=>{e.preventDefault();setDrag(true);},[]);
+  const onLeave=useCallback(()=>setDrag(false),[]);
+
+  const upload=async()=>{
+    if(!file)return;
+    const ext=file.name.split('.').pop().toLowerCase();
+    if(!['pdf','txt'].includes(ext)){setSt({err:'Only .pdf / .txt files are supported.'});return;}
+    setBusy(true);setSt(null);
+    const fd=new FormData();fd.append('file',file);
+    try{
+      const r=await fetch('/upload',{method:'POST',body:fd});
+      const d=await r.json();
+      if(r.ok){setSt({ok:d.message});onSuccess(file.name);}
+      else{setSt({err:d.detail||'Upload failed.'});}
+    }catch(e){setSt({err:'Network error: '+e.message});}
+    setBusy(false);
 </body></html>
