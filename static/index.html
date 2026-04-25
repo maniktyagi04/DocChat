@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>DocChat — Chat with any PDF</title>
+<meta name="description" content="Upload any PDF and instantly ask questions with AI. Precise answers with source citations."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif']},colors:{p:{50:'#faf5ff',100:'#f3e8ff',200:'#e9d5ff',300:'#d8b4fe',400:'#c084fc',500:'#a855f7',600:'#9333ea',700:'#7c3aed',800:'#6d28d9',900:'#4c1d95'}},keyframes:{fadeUp:{'0%':{opacity:'0',transform:'translateY(18px)'},'100%':{opacity:'1',transform:'translateY(0)'}},fadeIn:{'0%':{opacity:'0'},'100%':{opacity:'1'}},slideDown:{'0%':{opacity:'0',transform:'translateY(-10px)'},'100%':{opacity:'1',transform:'translateY(0)'}},dot:{'0%,80%,100%':{transform:'scale(0)',opacity:'0'},'40%':{transform:'scale(1)',opacity:'1'}}},animation:{'fade-up':'fadeUp 0.5s ease forwards','fade-in':'fadeIn 0.4s ease forwards','slide-down':'slideDown 0.5s ease forwards','dot':'dot 1.3s ease-in-out infinite'}}}}
+</script>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;min-height:100vh;background:linear-gradient(160deg,#fefeff 0%,#f8f5ff 50%,#ede9fe 100%)}
+.gtext{background:linear-gradient(135deg,#7c3aed,#a855f7,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.drop-active{border-color:#7c3aed!important;background:#f5f0ff!important;transform:scale(1.01)}
+.chat-scroll::-webkit-scrollbar{width:5px}
+.chat-scroll::-webkit-scrollbar-thumb{background:#d8b4fe;border-radius:3px}
+.d1{animation-delay:0s}.d2{animation-delay:.2s}.d3{animation-delay:.4s}
+textarea{resize:none}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useRef,useEffect,useCallback}=React;
+
+/* ── Typing dots ─────────────────────────────── */
+function Dots(){
+  return(
+    <div className="flex items-center gap-1.5 px-1 py-1">
+      {[0,1,2].map(i=>(
+        <span key={i} className={`w-2 h-2 rounded-full bg-p-400 inline-block animate-dot d${i+1}`} style={{animationDelay:`${i*.2}s`}}/>
+      ))}
+</body></html>
