@@ -189,11 +189,15 @@ async def query_document(req: QueryRequest):
         HTTPException: If no document has been uploaded
     """
     if vector_store is None:
+        logger.warning("Query attempt without uploaded document")
         raise HTTPException(status_code=400, detail="No document uploaded yet. Please upload a document first.")
+    logger.info(f"Processing query: {req.question[:50]}...")
     chain = get_qa_chain(vector_store)
     try:
         result = chain.invoke({"query": req.question})
+        logger.info("Query processed successfully")
     except Exception as e:
+        logger.error(f"Error querying document: {e}")
         raise HTTPException(status_code=500, detail=f"Error querying document: {str(e)}")
     
     sources = []
