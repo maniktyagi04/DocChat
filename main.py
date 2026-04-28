@@ -58,7 +58,15 @@ def load_document(file_path: str):
 
 
 def build_vector_store(documents):
-    """Split documents into chunks and build a FAISS vector store."""
+    """
+    Split documents into chunks and build a FAISS vector store.
+    
+    Args:
+        documents: List of LangChain Document objects
+        
+    Returns:
+        FAISS vector store with embedded document chunks
+    """
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     chunks = text_splitter.split_documents(documents)
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
