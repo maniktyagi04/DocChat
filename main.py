@@ -69,6 +69,12 @@ async def home():
     return HTMLResponse(Path("static/index.html").read_text())
 
 
+@app.get("/favicon.ico")
+async def favicon():
+    """Handle favicon requests to prevent 404 errors."""
+    return {"message": "No favicon"}
+
+
 class QueryRequest(BaseModel):
     question: str
 
