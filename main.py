@@ -175,7 +175,11 @@ async def query_document(req: QueryRequest):
     if vector_store is None:
         raise HTTPException(status_code=400, detail="No document uploaded yet. Please upload a document first.")
     chain = get_qa_chain(vector_store)
-    result = chain.invoke({"query": req.question})
+    try:
+        result = chain.invoke({"query": req.question})
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error querying document: {str(e)}")
+    
     sources = []
     for doc in result.get("source_documents", []):
         sources.append({
