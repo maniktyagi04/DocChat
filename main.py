@@ -26,6 +26,13 @@ app = FastAPI(
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
+# --------------- Configuration ---------------
+CHUNK_SIZE = 1000
+CHUNK_OVERLAP = 200
+RETRIEVAL_K = 3
+MODEL_NAME = "llama-3.3-70b-versatile"
+EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
+
 # --------------- state ---------------
 UPLOAD_DIR = Path("/tmp/uploads") if os.environ.get("VERCEL") else Path("uploads")
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
