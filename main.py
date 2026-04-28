@@ -36,7 +36,18 @@ vector_store = None  # will hold the FAISS index after upload
 # --------------- helpers ---------------
 
 def load_document(file_path: str):
-    """Load a PDF or text file and return LangChain Documents."""
+    """
+    Load a PDF or text file and return LangChain Documents.
+    
+    Args:
+        file_path: Path to the document file
+        
+    Returns:
+        List of LangChain Document objects
+        
+    Raises:
+        ValueError: If file type is not supported
+    """
     if file_path.endswith(".pdf"):
         loader = PyPDFLoader(file_path)
     elif file_path.endswith(".txt"):
