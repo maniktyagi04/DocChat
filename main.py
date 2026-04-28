@@ -93,9 +93,9 @@ def get_qa_chain(store):
     Returns:
         RetrievalQA chain configured with Groq LLM
     """
-    llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0)
+    llm = ChatGroq(model=MODEL_NAME, temperature=0)
     chain_type = "stuff"
-    retriever = store.as_retriever(search_kwargs={"k": 3})
+    retriever = store.as_retriever(search_kwargs={"k": RETRIEVAL_K})
     return_source_documents = True
     return RetrievalQA.from_chain_type(
         llm=llm, 
