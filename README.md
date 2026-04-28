@@ -29,6 +29,10 @@ Upload a PDF or text document, then ask questions — the app retrieves relevant
 
 ## Setup
 
+### Prerequisites
+- Python 3.8 or higher
+- Groq API key (get one at https://console.groq.com/)
+
 ### 1. Clone / copy the project
 
 ```
