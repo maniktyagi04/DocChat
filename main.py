@@ -17,7 +17,11 @@ from langchain.chains import RetrievalQA
 
 load_dotenv()
 
-app = FastAPI(title="RAG Application")
+app = FastAPI(
+    title="RAG Application",
+    description="A document Q&A system powered by RAG",
+    version="1.0.0"
+)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
