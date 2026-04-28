@@ -31,6 +31,9 @@ textarea{resize:none}
 <script type="text/babel">
 const {useState,useRef,useEffect,useCallback}=React;
 
+// Backend API URL
+const API_BASE_URL = 'https://docchat-backend-4pwm.onrender.com';
+
 /* ── Typing dots ─────────────────────────────── */
 function Dots(){
   return(
@@ -99,7 +102,7 @@ function ChatPanel({fileName}){
     setMsgs(p=>[...p,{role:'user',content:text}]);
     setBusy(true);
     try{
-      const r=await fetch('/query',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:text})});
+      const r=await fetch(`${API_BASE_URL}/query`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:text})});
       const d=await r.json();
       setMsgs(p=>[...p,{role:'assistant',content:r.ok?d.answer:'⚠️ '+(d.detail||'Error'),sources:d.sources||[]}]);
     }catch(e){
@@ -172,7 +175,7 @@ function UploadZone({onSuccess}){
     setBusy(true);setSt(null);
     const fd=new FormData();fd.append('file',file);
     try{
-      const r=await fetch('/upload',{method:'POST',body:fd});
+      const r=await fetch(`${API_BASE_URL}/upload`,{method:'POST',body:fd});
       const d=await r.json();
       if(r.ok){setSt({ok:d.message});onSuccess(file.name);}
       else{setSt({err:d.detail||'Upload failed.'});}
