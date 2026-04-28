@@ -98,6 +98,7 @@ def get_qa_chain(store):
 
 @app.get("/", response_class=HTMLResponse)
 async def home():
+    """Serve the main application HTML page."""
     return HTMLResponse(Path("static/index.html").read_text())
 
 
