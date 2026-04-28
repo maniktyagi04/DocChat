@@ -146,6 +146,18 @@ async def upload_document(file: UploadFile = File(...)):
 
 @app.post("/query")
 async def query_document(req: QueryRequest):
+    """
+    Query the uploaded document with a question.
+    
+    Args:
+        req: QueryRequest containing the user's question
+        
+    Returns:
+        Answer from the LLM with source document citations
+        
+    Raises:
+        HTTPException: If no document has been uploaded
+    """
     if vector_store is None:
         raise HTTPException(status_code=400, detail="No document uploaded yet. Please upload a document first.")
     chain = get_qa_chain(vector_store)
