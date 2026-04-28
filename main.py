@@ -148,7 +148,11 @@ async def upload_document(file: UploadFile = File(...)):
         shutil.copyfileobj(file.file, f)
     try:
         documents = load_document(str(file_path))
+        if not documents:
+            raise HTTPException(status_code=400, detail="Document is empty or could not be parsed.")
         vector_store = build_vector_store(documents)
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing document: {str(e)}")
     return {"message": f"'{safe_name}' uploaded and indexed successfully.", "pages": len(documents)}
