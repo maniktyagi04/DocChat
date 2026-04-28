@@ -114,6 +114,18 @@ class QueryRequest(BaseModel):
 
 @app.post("/upload")
 async def upload_document(file: UploadFile = File(...)):
+    """
+    Upload and index a document for Q&A.
+    
+    Args:
+        file: PDF or TXT file to process
+        
+    Returns:
+        Success message with document metadata
+        
+    Raises:
+        HTTPException: If file is invalid or processing fails
+    """
     global vector_store
     if not file.filename:
         raise HTTPException(status_code=400, detail="No file uploaded.")
