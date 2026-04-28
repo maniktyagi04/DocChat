@@ -74,12 +74,25 @@ def build_vector_store(documents):
 
 
 def get_qa_chain(store):
-    """Create a RetrievalQA chain from the vector store."""
+    """
+    Create a RetrievalQA chain from the vector store.
+    
+    Args:
+        store: FAISS vector store containing document embeddings
+        
+    Returns:
+        RetrievalQA chain configured with Groq LLM
+    """
     llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0)
     chain_type = "stuff"
     retriever = store.as_retriever(search_kwargs={"k": 3})
     return_source_documents = True
-    return RetrievalQA.from_chain_type(llm=llm, chain_type=chain_type, return_source_documents=return_source_documents, retriever=retriever)
+    return RetrievalQA.from_chain_type(
+        llm=llm, 
+        chain_type=chain_type, 
+        return_source_documents=return_source_documents, 
+        retriever=retriever
+    )
 
 # --------------- routes ---------------
 
