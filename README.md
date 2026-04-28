@@ -59,11 +59,17 @@ source venv/bin/activate   # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 4. Set your OpenAI API key
+### 4. Set your Groq API key
+
+Create a `.env` file in the project root:
 
 ```bash
 cp .env.example .env
-# Edit .env and paste your real API key
+```
+
+Edit `.env` and add your Groq API key:
+```
+GROQ_API_KEY=your_actual_groq_api_key_here
 ```
 
 ### 5. Run the app
