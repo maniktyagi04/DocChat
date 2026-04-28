@@ -106,5 +106,13 @@ Open **http://127.0.0.1:8000** in your browser.
 ## Notes
 
 - This uses **in-memory** FAISS — data is lost on restart.
-- Uses `gpt-3.5-turbo` by default. Change the model in `get_qa_chain()`.
+- Uses Groq's `llama-3.3-70b-versatile` model for fast inference.
+- HuggingFace embeddings run locally (no API key needed).
 - For production, add authentication, persistent storage, and rate limiting.
+
+## API Endpoints
+
+- `GET /` - Main application interface
+- `POST /upload` - Upload and index a document
+- `POST /query` - Query the indexed document
+- `GET /health` - Health check endpoint
