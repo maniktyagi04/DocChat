@@ -146,22 +146,30 @@ async def upload_document(file: UploadFile = File(...)):
     """
     global vector_store
     if not file.filename:
+        logger.warning("Upload attempt with no filename")
         raise HTTPException(status_code=400, detail="No file uploaded.")
     ext = Path(file.filename).suffix.lower()
     if ext not in [".pdf", ".txt"]:
+        logger.warning(f"Unsupported file type attempted: {ext}")
         raise HTTPException(status_code=400, detail="Unsupported file type. Only .pdf and .txt allowed.")
     safe_name = Path(file.filename).name
     file_path = UPLOAD_DIR / safe_name
+    logger.info(f"Processing upload: {safe_name}")
+    
     with open(file_path, "wb") as f:
         shutil.copyfileobj(file.file, f)
     try:
         documents = load_document(str(file_path))
         if not documents:
+            logger.error(f"Empty document: {safe_name}")
             raise HTTPException(status_code=400, detail="Document is empty or could not be parsed.")
         vector_store = build_vector_store(documents)
+        logger.info(f"Successfully indexed {len(documents)} pages from {safe_name}")
     except ValueError as ve:
+        logger.error(f"Validation error: {ve}")
         raise HTTPException(status_code=400, detail=str(ve))
     except Exception as e:
+        logger.error(f"Error processing document: {e}")
         raise HTTPException(status_code=500, detail=f"Error processing document: {str(e)}")
     return {"message": f"'{safe_name}' uploaded and indexed successfully.", "pages": len(documents)}
 
