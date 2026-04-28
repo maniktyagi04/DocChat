@@ -2,6 +2,13 @@
 
 ## Quick Deploy to Vercel
 
+### Important: You Need Two API Keys
+
+1. **Groq API Key** (for the LLM): You already have this
+2. **OpenAI API Key** (for embeddings): Get one at https://platform.openai.com/api-keys
+
+The lightweight version uses OpenAI embeddings instead of heavy local models to fit within Vercel's limits.
+
 ### Option 1: Deploy via Vercel Dashboard (Recommended)
 
 1. **Go to Vercel**: Visit https://vercel.com/
@@ -13,9 +20,13 @@
    - Root Directory: `./`
    - Build Command: Leave empty
    - Output Directory: Leave empty
-6. **Add Environment Variable**:
-   - Key: `GROQ_API_KEY`
-   - Value: `your_groq_api_key_here` (use your actual Groq API key)
+6. **Add Environment Variables** (BOTH REQUIRED):
+   - Variable 1:
+     - Key: `GROQ_API_KEY`
+     - Value: Your Groq API key
+   - Variable 2:
+     - Key: `OPENAI_API_KEY`
+     - Value: Your OpenAI API key (get from https://platform.openai.com/api-keys)
 7. **Click Deploy**
 
 ### Option 2: Deploy via Vercel CLI
