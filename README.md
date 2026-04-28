@@ -4,6 +4,12 @@ A simple **Retrieval-Augmented Generation (RAG)** app built with **LangChain**, 
 
 Upload a PDF or text document, then ask questions — the app retrieves relevant chunks and uses an LLM to answer.
 
+## 🚀 Live Deployment
+
+**Frontend:** https://doc-chat-pearl.vercel.app/  
+**Backend API:** https://docchat-backend-4pwm.onrender.com  
+**Health Check:** https://docchat-backend-4pwm.onrender.com/health
+
 ---
 
 ## Architecture
@@ -78,7 +84,9 @@ GROQ_API_KEY=your_actual_groq_api_key_here
 uvicorn main:app --reload
 ```
 
-Open **http://127.0.0.1:8000** in your browser.
+**Local development:** Open **http://127.0.0.1:8000** in your browser.
+
+**Live deployment:** Visit **https://doc-chat-pearl.vercel.app/**
 
 ---
 

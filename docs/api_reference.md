@@ -1,6 +1,7 @@
 # DocChat — REST API Reference
 
-Base URL: `http://localhost:8000`
+**Frontend URL:** `https://doc-chat-pearl.vercel.app/`  
+**Backend API Base URL:** `https://docchat-backend-4pwm.onrender.com`
 
 ---
 

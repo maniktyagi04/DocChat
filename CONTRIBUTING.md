@@ -21,7 +21,9 @@ cp .env.example .env              # add your GROQ_API_KEY
 uvicorn main:app --reload
 ```
 
-Open http://localhost:8000 in your browser.
+**For local development:** Open http://localhost:8000 in your browser.
+
+**Live deployment:** Visit https://doc-chat-pearl.vercel.app/
 
 ## Code Guidelines
 
