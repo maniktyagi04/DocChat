@@ -1,5 +1,6 @@
 import os
 import shutil
+import logging
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -16,6 +17,13 @@ from langchain_community.vectorstores import FAISS
 from langchain.chains import RetrievalQA
 
 load_dotenv()
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="RAG Application",
